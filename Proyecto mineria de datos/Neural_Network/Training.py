@@ -1,4 +1,4 @@
-from LogicTraining import initValues, netInput, calcError
+from Neural_Network.LogicTraining import initValues, netInput, calcError
 tupla = (1, 0, 1)
 trainingRate = 0.9
 inpWeights, midWeights, bias = initValues()
