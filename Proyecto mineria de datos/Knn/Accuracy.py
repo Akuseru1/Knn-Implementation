@@ -16,9 +16,9 @@ def getAccuracy(test, training, largest):
         # print("numero de test: ", len(test), "y esta en la posicion", i)
         for j in range(len(training)):
             distances.append((getDistance(test[i], training[j]), j)) # el indice de training esta guardandose como tupla
-        closestIndexes = closestIn(k_Closest(distances, largest), training) # solo los indices de los 3+ cercanos
+        closestIndexes = closestIn(k_Closest(distances, largest), training) # solo los indices de los 3+ cercanos (knn)
         testIndex = testIn(test, i) # un unico index
-        matches += match(testIndex, closestIndexes)
+        matches += match(testIndex, closestIndexes) # esto es el clasificador, no deberia ir en knn # page 80 principles, 225
 
     for h in range(len(matches)):
         if matches[h]:

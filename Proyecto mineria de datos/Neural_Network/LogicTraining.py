@@ -4,34 +4,24 @@ import math
 def initValues():
     inpWeights = []
     midWeights = []
-    weightsUnit1 = []
-    weightsUnit2 = []
-    weightsUnit3 = []
     bias = []
+    ## se debe poner un numero de inputs
+    numInputs = 2
     rand = lambda: random.uniform(-1, 1)
-    for i in range(2):
-        weightsUnit1.append(rand())
-        weightsUnit2.append(rand())
-        weightsUnit3.append(rand())
-
-    inpWeights.append(weightsUnit1)
-    inpWeights.append(weightsUnit2)
-    inpWeights.append(weightsUnit3)
-
-    weights4, weights5 = [rand() for i in range(2)]
-    θ4, θ5, θ6 = [rand() for i in range(3)]
-
-    bias.extend([θ4, θ5, θ6])
-
-    midWeights.extend([weights4, weights5])
+    for i in range(numInputs):
+        inpWeights.append([rand()])
+    for j in range(len(inpWeights) - 1):
+        midWeights.append([rand()])
+    for h in range(len(midWeights) + 1):
+        bias.append([rand()])
     return inpWeights, midWeights, bias
-
 
 
 def netOutput(inputs):
     newInput = -1 * inputs
     equation = 1 / (1 + math.exp(newInput))
     return equation
+
 
 def netInput(inpWeights, midWeights, bias, tupla):
     inputs = 0
@@ -57,5 +47,5 @@ def calcError(outputError, outputs, midWeights):
     errors = []
     for i in range(len(outputs)-1):
         calc = outputs[i] * (1 - outputs[i]) * outputError * midWeights[i]
-        errors.append(calc) # 5 queda en la primera pos
+        errors.append(calc) # 5 queda en ultima posicion
     return errors
