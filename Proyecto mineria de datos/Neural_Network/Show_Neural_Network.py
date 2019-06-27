@@ -1,7 +1,7 @@
-from Neural_Network.Training import updating, getValues
+from Neural_Network.Training import backPropagation, getValues
 
 def show():
     print(getValues())
-    for i in range(10):
-        updating()
+    for i in range(100):
+        backPropagation()
     print(getValues())

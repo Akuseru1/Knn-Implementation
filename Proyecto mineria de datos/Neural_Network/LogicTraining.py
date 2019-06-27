@@ -1,18 +1,18 @@
 import random
 import math
 
-def initValues():
+def initValues(numInputs):
     inpWeights = []
     midWeights = []
     bias = []
     ## se debe poner un numero de inputs
-    numInputs = 3
+    numNeurons = numInputs + 2 # Puede variar
     rand = lambda: random.uniform(-1, 1)
-    for i in range(numInputs):
-        inpWeights.append([rand() for o in range(numInputs - 1)])
-    for j in range(len(inpWeights) - 1):
+    for i in range(numInputs):   # number of inputs
+        inpWeights.append([rand() for o in range(numNeurons )])
+    for j in range(numNeurons):  # number of neurons in Hidden Layer ""## Se cambio de -1 a +2 !!!!
         midWeights.append(rand())
-    for h in range(len(midWeights) + 1):
+    for h in range(len(midWeights) + 1):  # number of bias values
         bias.append(rand())
     return inpWeights, midWeights, bias
 
@@ -28,8 +28,6 @@ def netInput(inpWeights, midWeights, bias, tupla):
     outputs = []
     for w in range(len(inpWeights[0])):
         for unit in range(len(inpWeights)):
-            #print("Inpweight [U",unit,"][W",w, "]:",inpWeights[unit][w])
-            #print("bias", bias[w])
             inputs += inpWeights[unit][w] * tupla[unit] # solo se calcula el input de 4 y 5
         inputs += bias[w]
         outputs.append(netOutput(inputs)) # 6 queda en la primera pos
