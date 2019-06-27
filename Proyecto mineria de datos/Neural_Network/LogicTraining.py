@@ -6,14 +6,14 @@ def initValues():
     midWeights = []
     bias = []
     ## se debe poner un numero de inputs
-    numInputs = 2
+    numInputs = 3
     rand = lambda: random.uniform(-1, 1)
     for i in range(numInputs):
-        inpWeights.append([rand()])
+        inpWeights.append([rand() for o in range(numInputs - 1)])
     for j in range(len(inpWeights) - 1):
         midWeights.append([rand()])
     for h in range(len(midWeights) + 1):
-        bias.append([rand()])
+        bias.append(rand())
     return inpWeights, midWeights, bias
 
 
