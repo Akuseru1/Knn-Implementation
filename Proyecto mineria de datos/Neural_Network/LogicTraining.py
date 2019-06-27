@@ -11,7 +11,7 @@ def initValues():
     for i in range(numInputs):
         inpWeights.append([rand() for o in range(numInputs - 1)])
     for j in range(len(inpWeights) - 1):
-        midWeights.append([rand()])
+        midWeights.append(rand())
     for h in range(len(midWeights) + 1):
         bias.append(rand())
     return inpWeights, midWeights, bias
