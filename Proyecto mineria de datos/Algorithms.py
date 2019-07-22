@@ -1,33 +1,55 @@
 from Knn.Accuracy import getAccuracy, getAccuracy_CV
+from Neural_Network.Show_Neural_Network import train
 import random
 
 
 def algorithm(iris):
-    print("Que modelo desea utilizar?")
+    print("Como desea separar los datos ?")
     choice = 0
     while choice != 1 and choice != 2:
-        print("Distribucion 70 / 30  (1)")
+        print("Distribucion Porcentual  (1)")
         choice = input("Cross-Validation  (2)")
         choice = int(choice)
     if choice == 1:
         percentage = percentageAdd()
-        ans = percentageDistribution(iris, percentage)
-        print("La precision usando el ", percentage, "es: ", ans)
-        return ans
+        print("Como desea Clasificar los datos?")
+        choice = 0
+        while choice != 1 and choice != 2:
+            print("Vecinos mas cercanos (1)")
+            choice = input("Red Neuronal (2)")
+            choice = int(choice)
+        if choice == 1:
+            ans = porcentualKnn(iris, percentage)
+            print("La precision usando el ", percentage, "es: ", ans)
+            return ans
+        else:
+            print("Red neuronal para porcentual")
+
     else:
-        ans = cross_Validation(iris)
-        print("La precision usando Validacion-Cruzada es: ", ans)
-        return ans
+        print("Como desea Clasificar los datos?")
+        choice = 0
+        while choice != 1 and choice != 2:
+            print("Vecinos mas cercanos (1)")
+            choice = input("Red Neuronal (2)")
+            choice = int(choice)
+        if choice == 1:
+            ans = cv_Knn(iris)
+            print("La precision usando Validacion-Cruzada es: ", ans)
+            return ans
+        else:
+            print("Red neuronal para CV")
 
 
-def percentageDistribution(iris, percentage):
+
+
+def porcentualKnn(iris, percentage):
     test, training = createPercentageDistribution(iris, percentage)
     showData(test,training)
     ans = str(int((getAccuracy(test, training, 3) / len(training)) * 100))+"%"
     return ans
 
 
-def cross_Validation(iris):
+def cv_Knn(iris):
     test, training = crearListas_CV(iris)
     showData(test, training)
     ans = str(getAccuracy_CV(test, training, 3))+"%"
@@ -35,7 +57,7 @@ def cross_Validation(iris):
 
 
 #########################################################################
-def percentageAdd():
+def percentageAdd(): # Consigue el porcentaje
     percentage = 50
     while percentage < 51 or percentage > 99:
         percentage = input("Ingrese el percentage de datos que desea evaluar (datos de entrenamiento)")
@@ -46,8 +68,7 @@ def percentageAdd():
             print("no hay nada con que comparar")
     return percentage
 
-def createPercentageDistribution(iris, percentage):
-    # Se consigue el percentage de datos que el usuario desea evaluar
+def createPercentageDistribution(iris, percentage): # usando el porcentaje, se hacen las respectivas distribuciones
     print("numero total de datos: ", len(iris.data))
 
     numdatosT = percentage / 100

@@ -6,27 +6,37 @@ inpWeights, midWeights, bias = initValues(len(tupla))
 # midWeights = [-0.3, -0.2]
 # bias = [-0.4, 0.2, 0.1]
 
-def forwardPropagation():
-    outputs = netInput(inpWeights, midWeights, bias, tupla)
-    return outputs
+def forwardPropagation(clabel, datosFlores):
+    tupla = datosFlores
+    outputs = netInput(inpWeights, midWeights, bias, tupla,clabel)
+    return outputs # 9 outputs
 
 
-def errorNodes(outputs): # envia a errors (una lista) los errores y añadimos el ultimo explicitamente
-    finalError = outputs[-1] * ((1 - outputs[-1]) ** 2)
-    errors = calcError(finalError, outputs, midWeights)
-    errors.append(finalError)
-    return errors
+def errorNodes(outputs, clabel): # envia a errors (una lista) los errores y añadimos el ultimo explicitamente
+    lastlayer = []
+    errorsEachNeuron = []
+    errors = []
+    for i in range(len(clabel)):
+        lastlayer.append(outputs[len(outputs)-(3 - i)] * (1 - outputs[len(outputs)-(3 - i)]) * (clabel[i] - outputs[len(outputs)-(3 - i)]))
+        errorsEachNeuron.append(calcError(lastlayer[i], outputs, midWeights, clabel, i))
+    for j in range(len(errorsEachNeuron[0])):  # para el error de un hidden layer se suman todos los errores
+        for h in range(len(errorsEachNeuron)): # generados por los errores de las neuronas de salida
+            suma = errorsEachNeuron[h][j]
+        errors.append(suma)
+        suma = 0
+    errors.extend(lastlayer)
+    return errors  # 21 errores, divididos en 4 listas, la cuarta es de 3 elementos, los nodos de salida
 
 
-def backPropagation(): # funcion que actualiza todos los valores
-    outputs = forwardPropagation()
-    errors = errorNodes(outputs)
-    for unit in range(len(midWeights)): # Updates hidden layer weights
-        midWeights[unit] = midWeights[unit] + trainingRate * errors[-1] * outputs[unit]
+def backPropagation(errors, outputs): # funcion que actualiza todos los valores
+    for i in range(len(midWeights[0])):
+        for unit in range(len(midWeights)): # Updates hidden layer weights
+            midWeights[unit][i] = midWeights[unit][i] + ((trainingRate * errors[unit]) * outputs[unit])
     for unit in range(len(inpWeights)):
         for w in range(len(inpWeights[0])):
             inpWeights[unit][w] = inpWeights[unit][w] + trainingRate * errors[w] * tupla[unit] # Updates input weights
-        bias[unit] = bias[unit] + trainingRate * errors[unit] #  Updates bias values
+    for biases in range(len(bias)):
+        bias[biases] = bias[biases] + trainingRate * errors[biases] #  Updates bias values
 
 def getValues():
     return inpWeights, midWeights, bias
