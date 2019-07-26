@@ -1,5 +1,5 @@
 from Knn.Accuracy import getAccuracy, getAccuracy_CV
-from Neural_Network.Prediction import predictPorcentual
+from Neural_Network.Prediction import predictPorcentual,predictCV
 import random
 
 
@@ -20,11 +20,10 @@ def algorithm(iris):
             choice = int(choice)
         if choice == 1:
             ans = porcentualKnn(iris, percentage)
-            print("La precision usando el ", percentage, "% es: ", ans)
-            return ans
+            print("La precision usando el ", percentage, "% con Knn es: ", ans)
         else:
             ans = porcentualNN(iris, percentage)
-            print("La precision usando el ", percentage, "% es: ", ans)
+            print("La precision usando el ", percentage, "% con Redes Neuronales es: ", ans)
 
     else:
         print("Como desea Clasificar los datos?")
@@ -35,10 +34,11 @@ def algorithm(iris):
             choice = int(choice)
         if choice == 1:
             ans = cv_Knn(iris)
-            print("La precision usando Validacion-Cruzada es: ", ans)
-            return ans
+            print("La precision usando Validacion-Cruzada con Knn es: ", ans)
         else:
-            print("Red neuronal para CV")
+            ans = CVNN(iris)
+            print("La precision usando Validacion-Cruzada con Redes Neuronales es: ", ans)
+
 
 
 ###################################################################################
@@ -55,13 +55,15 @@ def porcentualNN(iris, percentage): # metodo encargado de llamar a la funcion pr
 def CVNN(iris):
     test, training = crearListas_CV(iris)
     showData(test, training)
+    ans = str(predictCV(test, training, iris)) + "%"
+    return ans
 ###################################################################################
 
 
 def porcentualKnn(iris, percentage):
     test, training = createPercentageDistribution(iris, percentage)
     showData(test,training)
-    ans = str(int(getAccuracy(test, training, 3) / (len(training)) * 100))+"%"
+    ans = str(int((getAccuracy(test, training, 3) /(len(test)))* 100))+"%"
     return ans
 
 

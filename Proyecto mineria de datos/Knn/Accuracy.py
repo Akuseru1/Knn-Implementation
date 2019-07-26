@@ -18,27 +18,23 @@ def getAccuracy(test, training, largest):  #Obtiene la presicion en Knn
             distances.append((getDistance(test[i], training[j]), j)) # el indice de training esta guardandose como tupla
         closestIndexes = closestIn(k_Closest(distances, largest), training) # solo los indices de los 3+ cercanos (knn)
         testIndex = testIn(test, i) # un unico index
-        matches += match(testIndex, closestIndexes) # esto es el clasificador, no deberia ir en knn # page 80 principles, 225
+        matches.append(match(testIndex, closestIndexes)) # esto es el clasificador, no deberia ir en knn # page 80 principles, 225
     return matches.count(True)
 
 
 def getAccuracy_CV(test, training, largest): # Obtiene la presicion en validacion crusada
     porcent = []
-    porcentajeTotal = 0
-    numelemTraining = len(flowers) - len(training[0])
-    for k in range(len(training) + 1):
-        porcent.append(0)
+    totalPorcentage = []
+    numDiv = len(training) + 1
     for i in range(len(training)):
         for j in range(len(training)):
-            porcent[i] += getAccuracy(test, training[j], largest) / numelemTraining  # Es la suma de todos los matches
+            porcent.append(getAccuracy(test, training[j], largest))
+        totalPorcentage.append(sum(porcent) / (len(training) * numDiv))
+        porcent = []
         temp = training.pop(0)
         training.append(test)
         test = temp
-        numDiv = len(training) + 1
-
-    for u in porcent:
-        porcentajeTotal += u
-    return int((porcentajeTotal / numDiv ) * 100)
+    return int((sum(totalPorcentage) / numDiv ) * 100)
 
 ##################################################################################################
 
@@ -70,12 +66,18 @@ def testIn(test, testIndex): # consigue el indice del dato test  en la base de d
 def match(testIndex, trainingIndex): # compara si la clase de test es igual a los k datos mas cercanos ( trainingIndex tendra k elementos con la distancia y el indice)
     matches = []
     test = int(targets[testIndex])
+    closest = 0
+    train = []
+    for j in range(len(trainingIndex)):
+        train.append(targets[trainingIndex[j]])
+   # print("El label real es: ",test)
+    #print("Los mas cercanos son: ", train)
     for i in range(len(trainingIndex)):
-        closest = int(targets[trainingIndex[i]])
-        if test == closest:
-            matches.append(True)
-        else:
-            matches.append(False)
-    return matches
-
+        if train.count(train[i]) >= 2:
+            if(train[i] == test):
+                #print("El mas comun:", train[i], "es igual a ", test)
+                return True
+            else:
+                #print("El mas comun:", train[i], "no es igual a ", test)
+                return False
 

@@ -29,9 +29,9 @@ def netInput(inpWeights, midWeights, bias, tupla, clabel):
     outputs = []
     for w in range(len(inpWeights[0])):
         for unit in range(len(inpWeights)):
-            inputs += inpWeights[unit][w] * tupla[unit] # solo se calcula el input de 4 y 5
+            inputs += inpWeights[unit][w] * tupla[unit]
         inputs += bias[w]
-        outputs.append(netOutput(inputs)) # 6 queda en la primera pos
+        outputs.append(netOutput(inputs))
         inputs = 0
     finalOutputs = 0
     for errorNode in range(len(clabel)):
