@@ -19,7 +19,7 @@ def getAccuracy(test, training, largest):  #Obtiene la presicion en Knn
         closestIndexes = closestIn(k_Closest(distances, largest), training) # solo los indices de los 3+ cercanos (knn)
         testIndex = testIn(test, i) # un unico index
         matches += match(testIndex, closestIndexes) # esto es el clasificador, no deberia ir en knn # page 80 principles, 225
-    return (matches.count(True)  / (len(training)) ) * 100
+    return matches.count(True)
 
 
 def getAccuracy_CV(test, training, largest): # Obtiene la presicion en validacion crusada

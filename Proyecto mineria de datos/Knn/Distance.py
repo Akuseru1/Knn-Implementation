@@ -1,3 +1,5 @@
+#normalizar
+
 def getDistance(x, y):
     sum = 0
     for i, j in zip(x, y):

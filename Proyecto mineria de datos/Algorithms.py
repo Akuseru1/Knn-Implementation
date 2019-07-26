@@ -24,7 +24,7 @@ def algorithm(iris):
             return ans
         else:
             ans = porcentualNN(iris, percentage)
-            print("La presicion usando el ", percentage, "% es: ", ans)
+            print("La precision usando el ", percentage, "% es: ", ans)
 
     else:
         print("Como desea Clasificar los datos?")
@@ -61,7 +61,7 @@ def CVNN(iris):
 def porcentualKnn(iris, percentage):
     test, training = createPercentageDistribution(iris, percentage)
     showData(test,training)
-    ans = str(int(getAccuracy(test, training, 3)))+"%"
+    ans = str(int(getAccuracy(test, training, 3) / (len(training)) * 100))+"%"
     return ans
 
 
