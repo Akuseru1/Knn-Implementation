@@ -1,5 +1,5 @@
 from Knn.Accuracy import getAccuracy, getAccuracy_CV
-from Neural_Network.Show_Neural_Network import train
+from Neural_Network.Prediction import predictPorcentual
 import random
 
 
@@ -20,10 +20,11 @@ def algorithm(iris):
             choice = int(choice)
         if choice == 1:
             ans = porcentualKnn(iris, percentage)
-            print("La precision usando el ", percentage, "es: ", ans)
+            print("La precision usando el ", percentage, "% es: ", ans)
             return ans
         else:
-            print("Red neuronal para porcentual")
+            ans = porcentualNN(iris, percentage)
+            print("La presicion usando el ", percentage, "% es: ", ans)
 
     else:
         print("Como desea Clasificar los datos?")
@@ -40,12 +41,27 @@ def algorithm(iris):
             print("Red neuronal para CV")
 
 
+###################################################################################
+
+
+def porcentualNN(iris, percentage): # metodo encargado de llamar a la funcion predict que consigue las predicciones despues de entrenar en distribucion porcentual
+    test, training = createPercentageDistribution(iris, percentage)
+    showData(test, training)
+    matches = predictPorcentual(test, training, iris)  # devuelve los verdaderos y falsos
+    accuracy = matches.count(True) / len(matches)
+    return str(int(accuracy * 100))+"%"
+
+
+def CVNN(iris):
+    test, training = crearListas_CV(iris)
+    showData(test, training)
+###################################################################################
 
 
 def porcentualKnn(iris, percentage):
     test, training = createPercentageDistribution(iris, percentage)
     showData(test,training)
-    ans = str(int((getAccuracy(test, training, 3) / len(training)) * 100))+"%"
+    ans = str(int(getAccuracy(test, training, 3)))+"%"
     return ans
 
 
@@ -56,7 +72,7 @@ def cv_Knn(iris):
     return ans
 
 
-#########################################################################
+###################################################################################
 def percentageAdd(): # Consigue el porcentaje
     percentage = 50
     while percentage < 51 or percentage > 99:
@@ -67,6 +83,7 @@ def percentageAdd(): # Consigue el porcentaje
         elif percentage > 99:
             print("no hay nada con que comparar")
     return percentage
+
 
 def createPercentageDistribution(iris, percentage): # usando el porcentaje, se hacen las respectivas distribuciones
     print("numero total de datos: ", len(iris.data))

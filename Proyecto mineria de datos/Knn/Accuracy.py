@@ -8,7 +8,7 @@ for k in iris.data: # llena flowers con los elementos de iris.data
     flowers.append(temp)
 
 
-def getAccuracy(test, training, largest):
+def getAccuracy(test, training, largest):  #Obtiene la presicion en Knn
     distances = []
     matches = []
     count = 0
@@ -19,14 +19,10 @@ def getAccuracy(test, training, largest):
         closestIndexes = closestIn(k_Closest(distances, largest), training) # solo los indices de los 3+ cercanos (knn)
         testIndex = testIn(test, i) # un unico index
         matches += match(testIndex, closestIndexes) # esto es el clasificador, no deberia ir en knn # page 80 principles, 225
-
-    for h in range(len(matches)):
-        if matches[h]:
-            count += 1
-    return count  # es el numero de entrenamiento o el total?
+    return (matches.count(True)  / (len(training)) ) * 100
 
 
-def getAccuracy_CV(test, training, largest):
+def getAccuracy_CV(test, training, largest): # Obtiene la presicion en validacion crusada
     porcent = []
     porcentajeTotal = 0
     numelemTraining = len(flowers) - len(training[0])
